@@ -9,9 +9,15 @@ VLS licence does not limit any right you have under them.
 llama.cpp / ggml
 -------------------------------------------------------------------------------
 
-Files:      runtime\llama-server.exe, runtime\llama*.dll, runtime\ggml*.dll, runtime\mtmd.dll
+Files:      Windows  runtime\llama-server.exe, runtime\llama*.dll, runtime\ggml*.dll,
+                     runtime\mtmd.dll
+            Linux    runtime/llama-server, runtime/libllama*.so*, runtime/libggml*.so*,
+                     runtime/libmtmd.so*
 Source:     https://github.com/ggml-org/llama.cpp
 Licence:    MIT
+
+The Linux package carries upstream's own published Ubuntu build, repacked but not rebuilt: the
+binaries are byte-for-byte the ones the llama.cpp project released.
 
 The full licence text, as published by its authors, is supplied beside these files as
 
@@ -22,7 +28,7 @@ The full licence text, as published by its authors, is supplied beside these fil
 LLVM OpenMP runtime
 -------------------------------------------------------------------------------
 
-Files:      runtime\libomp.dll
+Files:      Windows only  runtime\libomp.dll
 Source:     https://github.com/llvm/llvm-project
 Licence:    Apache License 2.0 with LLVM Exceptions
 
@@ -44,7 +50,7 @@ Licence:    NVIDIA Software Licence Agreement, and the CUDA Supplement to it, wh
             https://docs.nvidia.com/cuda/eula/
 
 These libraries are redistributed unmodified. NVIDIA and CUDA are trademarks of NVIDIA
-Corporation. Neither VLS nor Velo Research is endorsed by or affiliated with NVIDIA Corporation.
+Corporation. Neither VLS nor Velocity is endorsed by or affiliated with NVIDIA Corporation.
 
 
 -------------------------------------------------------------------------------
