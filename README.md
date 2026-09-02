@@ -1,75 +1,72 @@
 <div align="center">
 
-<img src=".github/logo.png" alt="VLS" width="128">
+<img src=".github/hero.png" alt="VLS — give any model a 32-million-token memory" width="100%">
 
-<h1>VLS</h1>
+<br><br>
 
-### Velocity Local Services
-
-<h3>Give any model a 32-million-token memory.<br>On your own machine.</h3>
-
-**One command on Windows. One command on Linux. No cloud, no retraining, no Docker.**
-
-<br>
-
-[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-Local-LLM-Server?label=Preview&color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest)
+[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-Local-LLM-Server?label=release&color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest)
 [![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-Local-LLM-Server/total?color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases)
 [![Windows](https://img.shields.io/badge/Windows-x64-4B5BF5?style=for-the-badge&logo=windows&logoColor=white)](#windows)
 [![Linux](https://img.shields.io/badge/Linux-x64-4B5BF5?style=for-the-badge&logo=linux&logoColor=white)](#linux)
 [![Licence](https://img.shields.io/badge/free_for_personal_use-4B5BF5?style=for-the-badge)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
 
 **[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[Download](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
-
-<br>
-
-<img src=".github/home.png" alt="VLS panel" width="900">
 
 </div>
 
 <br>
 
-## Install
+## Install it in one line
 
 <a name="windows"></a>
-**Windows**
+
+**Windows** — PowerShell
 
 ```powershell
 irm https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest/download/install.ps1 | iex
 ```
 
 <a name="linux"></a>
-**Linux**
+
+**Linux** — any distribution
 
 ```bash
 curl -fsSL https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest/download/install.sh | sh
 ```
 
-**No administrator. No root. No package manager. No Docker.** Both installers unpack into your own
-home directory, check the download against the published SHA-256 before touching anything, and
-leave your models untouched on every update.
+No administrator. No root. No package manager. No Docker. Both installers unpack into your own home
+directory, verify the download against a published SHA-256 before touching anything, and leave your
+models alone on every update.
 
-The panel is then at **http://127.0.0.1:11500/**
+Then open **http://127.0.0.1:11500/**
 
-<sub>Windows takes the CUDA package if it finds an NVIDIA card and a **25 MB** processor-only
-package if it does not. Linux is **17 MB**, processor-only, glibc 2.28 or newer — Debian 10+,
+<sub>Windows takes the CUDA package when it finds an NVIDIA card and a **25 MB** processor-only
+package when it does not. Linux is **17 MB**, processor-only, glibc 2.28 or newer — Debian 10+,
 Ubuntu 18.04+, RHEL 8+, and the NAS distributions we have tried.</sub>
+
+<br>
+
+<div align="center">
+<img src=".github/home.png" alt="The VLS panel" width="920">
+</div>
 
 <br>
 
 ---
 
-## What it is
+## The problem it solves
 
-A local model service with a panel. Give it a GGUF model and, if you like, a folder of your own
-documents. It runs the model on your card or your processor, serves an **OpenAI-compatible API** on
-`127.0.0.1:11500`, and answers questions out of documents far larger than the model could ever read.
+A 4B model reads about **8 000 tokens** at a time. Your documentation is a million. Your codebase is
+ten million. Every answer to that today is a compromise: shrink the question, chunk the corpus into
+a vector database and hope the right chunk comes back, or rent a bigger model from somebody else's
+computer.
 
-**The unusual part is the memory.** A 4B model reads 8 192 tokens at a time. VLS keeps up to 32
-million tokens beside it and, for each question, selects the handful of passages that answer it. The
-corpus never enters the model's window — so the context length that matters stops being the
-model's, and adding documents costs disk rather than VRAM.
+**VLS keeps up to 32 million tokens beside the model and hands it only the passages that answer the
+question.** The corpus never enters the model's window. Adding documents costs disk, not VRAM. And
+it works on a model nobody retrained — Qwen, Llama, Mistral, whatever is already on your drive.
 
-It works on models nobody retrained. Qwen, Llama, Mistral, whatever you already have.
+The context length that matters stops being the model's.
 
 <br>
 
@@ -80,22 +77,30 @@ It works on models nobody retrained. Qwen, Llama, Mistral, whatever you already 
 | 🧠 **Remembers** | Compile a folder into a context and address millions of tokens. Ask questions across all of it. |
 | 🧾 **Shows its working** | Every answer carries a receipt: which passages were selected, how much of the memory reached the model, how long each stage took. |
 | 🔌 **Speaks OpenAI** | Point an editor, an agent or your own script at `http://127.0.0.1:11500/v1`. It needs to know nothing about VLS. |
-| 📊 **Measures itself** | The benchmarks below, runnable from the panel against your own model and your own memory. |
+| 📊 **Measures itself** | The benchmark below, runnable from the panel against your own model and your own memory. |
 
 <br>
 
 ---
 
-## The panel
+## Inside the panel
 
 <table>
 <tr>
-<td width="50%"><img src=".github/models.png" alt="Models"><br><sub><b>Models</b> — everything on the machine, what each one is, and how it would run here. The Hugging Face store is one switch away.</sub></td>
-<td width="50%"><img src=".github/contexts.png" alt="Contexts"><br><sub><b>Contexts</b> — memories compiled from your own documents. Written into as you work, read by any model, shared by pointing more than one thing at them.</sub></td>
+<td width="50%"><img src=".github/models.png" alt="Models"></td>
+<td width="50%"><img src=".github/contexts.png" alt="Contexts"></td>
 </tr>
 <tr>
-<td width="50%"><img src=".github/benchmarks.png" alt="Benchmarks"><br><sub><b>Benchmarks</b> — the numbers below, runnable here against your own model. Numbers you produced beat numbers somebody told you.</sub></td>
-<td width="50%"><img src=".github/system.png" alt="System"><br><sub><b>System</b> — card, driver, memory, temperature, and a list of checks with what each one found. When a model refuses to load, the reason is usually already here.</sub></td>
+<td width="50%"><b>Models</b><br><sub>Everything on the machine, what each one is, and how it would run <i>here</i>. The Hugging Face store is one switch away, with the fit for your card worked out before you download.</sub></td>
+<td width="50%"><b>Contexts</b><br><sub>Memories compiled from your own documents. Written into as you work, readable by any model, shared by pointing more than one thing at the same one.</sub></td>
+</tr>
+<tr>
+<td width="50%"><img src=".github/benchmarks.png" alt="Benchmarks"></td>
+<td width="50%"><img src=".github/system.png" alt="System"></td>
+</tr>
+<tr>
+<td width="50%"><b>Benchmarks</b><br><sub>The numbers below, runnable here against your own model and your own memory. Numbers you produced beat numbers somebody told you.</sub></td>
+<td width="50%"><b>System</b><br><sub>Card, driver, memory, temperature, and a list of checks with what each one found. When a model refuses to load, the reason is usually already on this page.</sub></td>
 </tr>
 </table>
 
@@ -103,33 +108,12 @@ It works on models nobody retrained. Qwen, Llama, Mistral, whatever you already 
 
 ---
 
-## How it is built
+## Measured, not claimed
 
-VLS is a **router with a memory**, not an inference engine of its own. Work goes to whichever
-backend suits the model, and we are explicit about which parts are ours and which are other
-people's:
-
-| layer | what it is | whose |
-|---|---|---|
-| **Velocity Context** | The 32M-token memory: compiles documents, selects the passages a question needs, hands only those to the model. This is what makes a small window stop mattering. | **ours** |
-| **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. Preview ships their `llama-server` unmodified. | *theirs* |
-| **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
-| **[FreeToken](https://github.com/FlashML-org/FreeToken)** | Expert offload for very large MoE models — what makes a 200B-parameter mixture run on a machine that cannot hold it. Apache-2.0. **Planned, not built yet**: today an MoE model routes to llama.cpp. | *theirs* |
-
-Credit where it is owed: without llama.cpp there would be no Preview. VLS adds the memory, the
-routing, the hardware fit and the panel — the engine is theirs, and their licence travels inside
-every package we ship.
-
-<br>
-
----
-
-## Velocity Context, measured
-
-Measured on **NVIDIA's RULER** — their harness, cloned, nothing underneath it modified: their
-generators, their essays, their scorer. Driven through this service's own API with **Qwen3.5-4B**
-on a laptop **RTX 3060** and an **8 192-token model window**. The 128k column is twenty samples a
-task: 260 generations, zero nulls, 24.5 minutes.
+**NVIDIA's RULER** — their harness, cloned, nothing underneath it modified: their generators, their
+essays, their scorer. Driven through this service's own API with **Qwen3.5-4B** on a laptop
+**RTX 3060** and an **8 192-token model window**. The 128k column is twenty samples a task: 260
+generations, zero nulls, 24.5 minutes.
 
 | RULER task | 4k | 16k | 32k | 64k | 128k |
 |---|---:|---:|---:|---:|---:|
@@ -150,29 +134,43 @@ task: 260 generations, zero nulls, 24.5 minutes.
 
 <sub>4k–64k are five samples a cell; 128k is twenty.</sub>
 
-**How to read this, including the parts that do not flatter us.**
+**Read it with the parts that do not flatter us.** The score *rises* from 16k to 64k, which is
+backwards for a context benchmark and is the shape this architecture predicts: the model's window is
+8 192 tokens either way, so nothing is ever "too long to read" — what changes is how much material
+selection has to choose from. The **16k column is the anomaly, not the 128k one**, and we do not yet
+know why. `qa_2` at 30% is the floor and nothing we have tried has moved it: on `qa_1` and `qa_2`
+selection delivers the answer and the 4B model fails to convert it. At five samples a cell the 128k
+average reads **89.6**; at twenty it reads **86.9**, and we publish the second number.
 
-The score *rises* from 16k to 64k, which is backwards for a context benchmark and is the shape this
-architecture predicts: the model's window is 8 192 tokens either way, so nothing is ever "too long
-to read" — what changes is how much material selection has to choose from. The **16k column is the
-anomaly, not the 128k one**, and we do not yet know why.
-
-`qa_2` at 30% is the floor and nothing we have tried has moved it. On `qa_1` and `qa_2` selection
-delivers the answer and the 4B model fails to convert it — a smaller model reading well is still a
-smaller model.
-
-At five samples a cell the 128k average reads **89.6**. At twenty it reads **86.9**. We publish the
-second number.
-
-> ### 📄 An article is coming
+> ### 📄 The article is coming
 >
 > How the memory is compiled, how selection picks passages, why the corpus never enters the window,
 > and every number above reproduced step by step.
 >
-> **It is not written yet — sorry.** It will be on [veloresearch.com](https://veloresearch.com) and
-> announced on [@velo_research](https://x.com/velo_research). Until then, this table and the receipt
-> in the panel are the whole of what we are claiming. Nothing here is a number we cannot show you
-> how to reproduce.
+> **It is not written yet — sorry.** It will be at [veloresearch.com](https://veloresearch.com) and
+> announced on [@velo_research](https://x.com/velo_research). Until then this table and the receipt
+> in the panel are the whole of what we claim. Nothing here is a number we cannot show you how to
+> reproduce.
+
+<br>
+
+---
+
+## Built on
+
+VLS is a **router with a memory**, not an inference engine of its own. Work goes to whichever backend
+suits the model, and we are explicit about which parts are ours and which are other people's.
+
+| layer | what it is | whose |
+|---|---|---|
+| **Velocity Context** | The 32M-token memory: compiles documents, selects the passages a question needs, hands only those to the model. This is what makes a small window stop mattering. | **ours** |
+| **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
+| **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
+| **[FreeToken](https://github.com/FlashML-org/FreeToken)** | Expert offload for very large MoE models: what makes a 200B-parameter mixture run on a machine that cannot hold it. Apache-2.0. **Planned, not built yet** — today an MoE model routes to llama.cpp. | *theirs* |
+
+Credit where it is owed: **without llama.cpp there would be no VLS to download.** We add the memory,
+the routing, the hardware fit and the panel. The engine is theirs, and their licence travels inside
+every package we ship.
 
 <br>
 
@@ -180,7 +178,7 @@ second number.
 
 ## Connect anything
 
-VLS speaks the OpenAI protocol, so anything that can talk to OpenAI can talk to it.
+VLS speaks the OpenAI protocol, so anything that already talks to OpenAI talks to it.
 
 ```bash
 curl http://127.0.0.1:11500/v1/chat/completions \
@@ -198,7 +196,7 @@ print(client.chat.completions.create(
 ).choices[0].message.content)
 ```
 
-The panel's **API** page has the same snippet already filled in with your machine's address and key.
+The panel's **API** page has the same snippets already filled in with this machine's address and key.
 
 <br>
 
@@ -206,23 +204,32 @@ The panel's **API** page has the same snippet already filled in with your machin
 
 ## Where things go
 
+<table>
+<tr><td width="50%">
+
 **Windows**
 
 ```
-%LOCALAPPDATA%\Programs\VLS      the program.  An update replaces it wholesale.
-%LOCALAPPDATA%\VLS\models        your models.  An update never touches them.
-%LOCALAPPDATA%\VLS\contexts      your memories, likewise.
+%LOCALAPPDATA%\Programs\VLS
+%LOCALAPPDATA%\VLS\models
+%LOCALAPPDATA%\VLS\contexts
 ```
+
+</td><td width="50%">
 
 **Linux**
 
 ```
-~/.local/lib/vls                 the program.  An update replaces it wholesale.
-~/.local/share/vls/models        your models.  An update never touches them.
-~/.local/share/vls/contexts      your memories, likewise.
+~/.local/lib/vls
+~/.local/share/vls/models
+~/.local/share/vls/contexts
 ```
 
-Updating must never cost you a re-download of models, so the two are kept apart. To remove VLS,
+</td></tr>
+</table>
+
+The first path is the program and an update replaces it wholesale. The other two are yours and an
+update never touches them — updating VLS must never cost you a re-download of models. To remove it,
 delete the program directory; your models and memories stay until you delete those too.
 
 **Updating:** Settings → Service says whether a newer build exists. VLS reads one small file to find
@@ -239,10 +246,10 @@ It is the first build anyone outside Velocity has been able to run, and it behav
 are rough edges. There are bugs. Some of them are ours to be embarrassed about, and you will
 probably find one before we do.
 
-**Please [open an issue](https://github.com/Veloresearch/VLS-Local-LLM-Server/issues) when you do.**
-That is what a preview is for, and it is by far the fastest way to get it fixed.
+**Please [open an issue](https://github.com/Veloresearch/VLS-Local-LLM-Server/issues) when you do** —
+that is what a preview is for, and it is by far the fastest way to get it fixed.
 
-Nothing here sends your data anywhere, so the worst case is a service that annoys you — not one that
+Nothing here sends your data anywhere, so the worst case is a service that annoys you, not one that
 costs you something.
 
 <br>
@@ -266,9 +273,17 @@ Full terms: **[LICENSE](LICENSE)** · Third-party components and their licences:
 
 <div align="center">
 
-<img src=".github/logo.png" alt="Velocity" width="48">
+### ⭐ If VLS is useful to you, star it
 
-**Velocity**
+It is the whole of our marketing budget, and it is how the next person finds this.
+
+[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=social)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
+
+<br>
+
+<img src=".github/logo.png" alt="Velocity" width="52">
+
+### Velocity
 
 **[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
 
