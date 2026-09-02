@@ -5,11 +5,11 @@
 <br><br>
 
 [![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-32M-Context-Local-LLM?label=release&color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-32M-Context-Local-LLM/total?color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases)
-[![Windows](https://img.shields.io/badge/Windows-x64-4B5BF5?style=for-the-badge&logo=windows&logoColor=white)](#windows)
-[![Linux](https://img.shields.io/badge/Linux-x64-4B5BF5?style=for-the-badge&logo=linux&logoColor=white)](#linux)
-[![Licence](https://img.shields.io/badge/free_for_personal_use-4B5BF5?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/stargazers)
+[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-32M-Context-Local-LLM/total?color=2EA043&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases)
+[![Windows](https://img.shields.io/badge/Windows-x64-0078D4?style=for-the-badge&logo=windows&logoColor=white)](#windows)
+[![Linux](https://img.shields.io/badge/Linux-x64-E95420?style=for-the-badge&logo=linux&logoColor=white)](#linux)
+[![Licence](https://img.shields.io/badge/free_for_personal_use-8B5CF6?style=for-the-badge)](LICENSE)
+[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=E3B341&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/stargazers)
 
 **[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[Download](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
 
@@ -141,6 +141,55 @@ selection has to choose from. The **16k column is the anomaly, not the 128k one*
 know why. `qa_2` at 30% is the floor and nothing we have tried has moved it: on `qa_1` and `qa_2`
 selection delivers the answer and the 4B model fails to convert it. At five samples a cell the 128k
 average reads **89.6**; at twenty it reads **86.9**, and we publish the second number.
+
+### And beyond, to 32 million
+
+The table above is NVIDIA's harness at the lengths it ships. Past 128k it stops, so the ladder
+below is **our own harness** — same task definitions, our haystack, our scorer — run from 1M to 32M
+on the same machine and the same 8 192-token window. The two are reported separately and never
+averaged together.
+
+| task | 1M | 5M | 10M | 15M | 20M | 25M | 32M |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| niah_single_1 | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| niah_single_2 | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| niah_single_3 | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| niah_multikey_1 | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| niah_multivalue | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| niah_multiquery | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| cwe | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| fwe | 100 | 100 | 100 | 100 | 100 | 100 | 100 |
+| vt | 80 | 60 | 100 | 80 | 80 | 100 | 100 |
+| **nine-task average** | **97.8** | **95.6** | **100** | **97.8** | **97.8** | **100** | **100** |
+
+<sub>Five samples a cell, 315 in the sweep. Qwen3.5-4B-Q4_K_M, 8 192-token window, 32 layers on an
+RTX 3060 Laptop 6 GB, thinking off.</sub>
+
+**And the time to answer does not grow with the corpus.**
+
+| corpus | answer, median | answer, p90 | one-time build |
+|---|---:|---:|---:|
+| 1M | 703 ms | 890 ms | 0.5 s |
+| 10M | 570 ms | 1 081 ms | 5.3 s |
+| 20M | 708 ms | 1 117 ms | 10.6 s |
+| 32M | 653 ms | 1 111 ms | 17.2 s |
+
+Thirty-two times the corpus, the same time to answer, because the model never reads more. Ingestion
+runs at about 1.9M tokens a second and is paid once, when the material is written.
+
+**Four things this ladder does not say**, and we would rather say them than have them found:
+
+1. **Five samples a cell.** One sample is 20 points, so a 100% cell is consistent with anything
+   from roughly 55% upward at 95% confidence. `vt`'s 60–100% spread is one underlying rate and no
+   trend across lengths should be read into it.
+2. **Nine of RULER's thirteen tasks** — `niah_multikey_2`, `niah_multikey_3`, `qa_1` and `qa_2` are
+   not in this sweep. This average is **not** comparable to a published 13-task RULER average, nor
+   to the 128k table above.
+3. **Our generator at these lengths.** Same task definitions, our haystack, our scorer. NVIDIA's
+   harness does not run here, so this is our measurement of our own work.
+4. **Eight of the nine are needle-shaped**, and an inverted index finds a UUID in 32M tokens too. A
+   bare score at 32M shows the architecture holds at scale, not that selection beats search. What
+   separates the two is `vt` and `cwe` — measured against baselines at 128k, where baselines exist.
 
 > ### 📄 The article is coming
 >
