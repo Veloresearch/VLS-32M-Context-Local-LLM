@@ -16,7 +16,7 @@
 </div>
 
 <br>
-
+Hello guys sry links not work now we will fix this in next hours :)
 ## Install it in one line
 
 <a name="windows"></a>
