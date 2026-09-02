@@ -1,0 +1,56 @@
+VLS - THIRD-PARTY NOTICES
+
+VLS is supplied with the components listed below. Each is owned by its authors and licensed under
+its own terms, which are reproduced or referenced here. Those terms govern those components; the
+VLS licence does not limit any right you have under them.
+
+
+-------------------------------------------------------------------------------
+llama.cpp / ggml
+-------------------------------------------------------------------------------
+
+Files:      runtime\llama-server.exe, runtime\llama*.dll, runtime\ggml*.dll, runtime\mtmd.dll
+Source:     https://github.com/ggml-org/llama.cpp
+Licence:    MIT
+
+The full licence text, as published by its authors, is supplied beside these files as
+
+    runtime\LICENSE-llama.cpp
+
+
+-------------------------------------------------------------------------------
+LLVM OpenMP runtime
+-------------------------------------------------------------------------------
+
+Files:      runtime\libomp.dll
+Source:     https://github.com/llvm/llvm-project
+Licence:    Apache License 2.0 with LLVM Exceptions
+
+The full licence text is supplied beside the file as
+
+    runtime\LICENSE-LLVM-OpenMP
+
+
+-------------------------------------------------------------------------------
+NVIDIA CUDA runtime libraries
+-------------------------------------------------------------------------------
+
+Files:      runtime\cudart64_*.dll, runtime\cublas64_*.dll, runtime\cublasLt64_*.dll
+            (present in the CUDA package only)
+Source:     NVIDIA CUDA Toolkit
+Licence:    NVIDIA Software Licence Agreement, and the CUDA Supplement to it, which permit these
+            libraries to be redistributed with an application.
+
+            https://docs.nvidia.com/cuda/eula/
+
+These libraries are redistributed unmodified. NVIDIA and CUDA are trademarks of NVIDIA
+Corporation. Neither VLS nor Velo Research is endorsed by or affiliated with NVIDIA Corporation.
+
+
+-------------------------------------------------------------------------------
+Models
+-------------------------------------------------------------------------------
+
+VLS ships no model weights. Any model you download through VLS carries the licence its publisher
+set, and that licence governs your use of it. VLS shows the licence a repository declares before
+a download begins; it is your responsibility to read it.
