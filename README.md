@@ -4,14 +4,14 @@
 
 <br><br>
 
-[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-Local-LLM-Server?label=release&color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-Local-LLM-Server/total?color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases)
+[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-32M-Context-Local-LLM?label=release&color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-32M-Context-Local-LLM/total?color=4B5BF5&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases)
 [![Windows](https://img.shields.io/badge/Windows-x64-4B5BF5?style=for-the-badge&logo=windows&logoColor=white)](#windows)
 [![Linux](https://img.shields.io/badge/Linux-x64-4B5BF5?style=for-the-badge&logo=linux&logoColor=white)](#linux)
 [![Licence](https://img.shields.io/badge/free_for_personal_use-4B5BF5?style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
+[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/stargazers)
 
-**[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[Download](https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
+**[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[Download](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
 
 </div>
 
@@ -24,7 +24,7 @@
 **Windows** — PowerShell
 
 ```powershell
-irm https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest/download/install.ps1 | iex
+irm https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest/download/install.ps1 | iex
 ```
 
 <a name="linux"></a>
@@ -32,7 +32,7 @@ irm https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest/downloa
 **Linux** — any distribution
 
 ```bash
-curl -fsSL https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest/download/install.sh | sh
+curl -fsSL https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest/download/install.sh | sh
 ```
 
 No administrator. No root. No package manager. No Docker. Both installers unpack into your own home
@@ -246,7 +246,7 @@ It is the first build anyone outside Velocity has been able to run, and it behav
 are rough edges. There are bugs. Some of them are ours to be embarrassed about, and you will
 probably find one before we do.
 
-**Please [open an issue](https://github.com/Veloresearch/VLS-Local-LLM-Server/issues) when you do** —
+**Please [open an issue](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/issues) when you do** —
 that is what a preview is for, and it is by far the fastest way to get it fixed.
 
 Nothing here sends your data anywhere, so the worst case is a service that annoys you, not one that
@@ -279,7 +279,7 @@ Full terms: **[LICENSE](LICENSE)** · Third-party components and their licences:
 
 It is the whole of our marketing budget, and it is how the next person finds this.
 
-[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white&label=star%20this%20repo)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
+[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white&label=star%20this%20repo)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/stargazers)
 
 <br>
 
@@ -299,13 +299,13 @@ It is the whole of our marketing budget, and it is how the next person finds thi
 <tr>
 <td align="center" width="33%">
 <b>Get it</b><br><br>
-<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest">Download</a><br>
+<a href="https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest">Download</a><br>
 <a href="#install-it-in-one-line">Install</a><br>
-<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/releases">All releases</a>
+<a href="https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases">All releases</a>
 </td>
 <td align="center" width="33%">
 <b>Talk to us</b><br><br>
-<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/issues">Report a bug</a><br>
+<a href="https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/issues">Report a bug</a><br>
 <a href="mailto:contact@veloresearch.com">contact@veloresearch.com</a><br>
 <a href="https://x.com/velo_research">@velo_research</a>
 </td>
