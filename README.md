@@ -215,7 +215,6 @@ suits the model, and we are explicit about which parts are ours and which are ot
 | **Velocity Context** | The 32M-token memory: compiles documents, selects the passages a question needs, hands only those to the model. This is what makes a small window stop mattering. | **ours** |
 | **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
 | **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
-| **[FreeToken](https://github.com/FlashML-org/FreeToken)** | Expert offload for very large MoE models: what makes a 200B-parameter mixture run on a machine that cannot hold it. Apache-2.0. **Planned, not built yet** — today an MoE model routes to llama.cpp. | *theirs* |
 
 Credit where it is owed: **without llama.cpp there would be no VLS to download.** We add the memory,
 the routing, the hardware fit and the panel. The engine is theirs, and their licence travels inside
