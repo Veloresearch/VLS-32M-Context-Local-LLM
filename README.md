@@ -16,7 +16,7 @@
 </div>
 
 <br>
-Hello guys sry links not work now we will fix this in next hours :)
+
 ## Install it in one line
 
 <a name="windows"></a>
@@ -273,19 +273,56 @@ Full terms: **[LICENSE](LICENSE)** · Third-party components and their licences:
 
 <div align="center">
 
-### ⭐ If VLS is useful to you, star it
+<br>
+
+### ⭐ Star it if it is useful
 
 It is the whole of our marketing budget, and it is how the next person finds this.
 
-[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=social)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
+[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-Local-LLM-Server?style=for-the-badge&color=4B5BF5&logo=github&logoColor=white&label=star%20this%20repo)](https://github.com/Veloresearch/VLS-Local-LLM-Server/stargazers)
 
 <br>
 
-<img src=".github/logo.png" alt="Velocity" width="52">
+---
 
-### Velocity
+<br>
 
-**[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
+<img src=".github/logo.png" alt="Velocity" width="56">
+
+<h3>Velocity</h3>
+
+<b>Local AI that stays local.</b>
+
+<br>
+
+<table>
+<tr>
+<td align="center" width="33%">
+<b>Get it</b><br><br>
+<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/releases/latest">Download</a><br>
+<a href="#install-it-in-one-line">Install</a><br>
+<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/releases">All releases</a>
+</td>
+<td align="center" width="33%">
+<b>Talk to us</b><br><br>
+<a href="https://github.com/Veloresearch/VLS-Local-LLM-Server/issues">Report a bug</a><br>
+<a href="mailto:contact@veloresearch.com">contact@veloresearch.com</a><br>
+<a href="https://x.com/velo_research">@velo_research</a>
+</td>
+<td align="center" width="33%">
+<b>Read</b><br><br>
+<a href="https://veloresearch.com">veloresearch.com</a><br>
+<a href="LICENSE">Licence</a><br>
+<a href="THIRD-PARTY-NOTICES.txt">Third-party notices</a>
+</td>
+</tr>
+</table>
+
+<br>
+
+<sub>Built on <a href="https://github.com/ggml-org/llama.cpp">llama.cpp</a> — thank you.</sub>
+
+<sub>© 2026 Velocity · VLS is free for personal use; commercial use requires a licence.</sub>
 
 <sub>This repository publishes releases. The source lives elsewhere.</sub>
 
