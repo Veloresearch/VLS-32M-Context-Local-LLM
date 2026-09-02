@@ -10,6 +10,7 @@
 [![Linux](https://img.shields.io/badge/Linux-x64-E95420?style=for-the-badge&logo=linux&logoColor=white)](#linux)
 [![Licence](https://img.shields.io/badge/free_for_personal_use-8B5CF6?style=for-the-badge)](LICENSE)
 [![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=E3B341&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/stargazers)
+[![Views](https://visitor-badge.laobi.icu/badge?page_id=Veloresearch.VLS-32M-Context-Local-LLM&title=views&color=6E7681&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
 
 **[veloresearch.com](https://veloresearch.com)** &nbsp;·&nbsp; **[@velo_research](https://x.com/velo_research)** &nbsp;·&nbsp; **[Download](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)** &nbsp;·&nbsp; **[contact@veloresearch.com](mailto:contact@veloresearch.com)**
 
