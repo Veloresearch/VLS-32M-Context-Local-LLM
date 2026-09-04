@@ -49,7 +49,7 @@ Three ways exist to put more material in front of a model. Two of them are what 
 | | a bigger context window | RAG / a vector database | **Velocity Context** |
 |---|---|---|---|
 | **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only &mdash; **0.015%** of the context |
-| **what you have to run** | a bigger card | a second service, an embedding model, an index | nothing: one file on your disk |
+| **what you have to run** | a bigger card | a second service, an embedding model, an index | nothing: a `.mfyc` on your disk |
 | **adding a document** | nothing to do, but the window fills | re-embed, re-index, hope the chunk size still suits | append, in seconds |
 | **tuning it** | context length | chunk size, overlap, top-k, similarity threshold | none of these exist |
 | **why did it answer that?** | it saw everything, so: unanswerable | which chunks came back, roughly | **the exact text it was handed, every turn** |
@@ -67,7 +67,7 @@ None of the lines below are arguments. They are things that used to follow from 
 and no longer do.
 
 - *"That corpus is too big for a local model."* Size stopped being the question. Thirty-two million
-  tokens is one file on a laptop disk.
+  tokens is a `.mfyc` on a laptop disk, and nothing is running.
 - *"You need a bigger card."* The window never grew. What runs is a passage, and a passage is small
   whether it came out of a megabyte or a gigabyte.
 - *"Long context is slow."* Answer time is set by what is executed, not by what is held. Thirty-two
@@ -152,8 +152,39 @@ context is a **file on your disk** in a documented format, built once, read dire
 Selection works on **rarity in the model's own tokens**. When you ask a question, VLS looks at which
 of its words are rare in this particular corpus, finds the windows that hold them, follows names
 from those windows to the ones they point at &mdash; a second hop, for questions whose answer sits beside
-somebody the question never named &mdash; and assembles what fits. A single linear pass over token ids
-with a hash lookup, which is what makes 32 million affordable without a GPU touching it.
+somebody the question never named &mdash; and assembles what fits. It never walks what you have
+stored. It reads the places those rare tokens actually occur and nothing else, which is what makes
+thirty-two million affordable with no GPU touching any of it.
+
+<a name="mfyc"></a>
+### `.mfyc`, the format we had to invent
+
+All of this has to live somewhere, and nothing that already existed was built for it. A vector
+database is built to hold embeddings. A search index is built to rank documents. Neither is built to
+be reached into, mid-sentence, by a model with an eight-thousand-token window. So we wrote our own
+format, and it is the reason the rest of this page is possible.
+
+A **`.mfyc`** is your material, compiled once, on your disk, under a name you chose. It is not a
+database. It is not an index directory owned by some service. There is no daemon holding it open, no
+port, no process to start, nothing to keep alive between questions. It sits there, doing nothing, at
+no cost, until something reaches into it.
+
+- **It is not loaded to be used.** A 32M-token context does not become 32M tokens of RAM. This is
+  the whole trick: the memory stays on the disk and the question goes to it, rather than the memory
+  coming to the model.
+- **It outlives the model.** Swap Qwen for LFM, 4B for 8B, one quantisation for another &mdash; your
+  context comes with you, untouched, with nothing to rebuild. Memory that belongs to you, not to
+  whatever you happened to be running the day you compiled it.
+- **Built once, in seconds.** 32,000,000 tokens in 17.2 s on the laptop in the header. Adding more
+  is an append: no re-index, no re-embed, no rebuild of anything.
+- **There are no embeddings inside it.** So there is no embedding model to keep resident, no second
+  system to run, and no morning where an embedding upgrade quietly invalidates everything you own.
+- **It moves.** Copy it, back it up, keep it on a stick, hand it to another machine. There is no
+  export step, because there is nothing to export it *from*.
+
+We are not going to publish the internals here. What is worth saying is that the format and the
+runtime that reads it were built for each other, by us, on purpose &mdash; and that is the difference
+between a laptop answering across thirty-two million tokens and a laptop that cannot.
 
 ### How little of it runs
 
@@ -396,6 +427,7 @@ people's.
 | layer | what it is | whose |
 |---|---|---|
 | **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those &mdash; a fraction of a percent of the context per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
+| **`.mfyc`** | Our own on-disk format for a compiled context: built once, read directly, held by no service, and readable by any model you later switch to. Velocity Context is the method; this is what it lives in. | **ours** |
 | **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
 | **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts &mdash; the research line behind Velocity. Selected automatically for models built for it. | **ours** |
 
