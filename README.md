@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/banner.png" alt="VLS — run any model on your own machine, and give it a memory 3,900x its window" width="100%">
+<img src=".github/banner.png" alt="VLS — Velocity Context: reach 32 million tokens, execute a fraction of a percent" width="100%">
 
 <br><br>
 
@@ -19,7 +19,7 @@
 
 <div align="center">
 
-**[Install](#install)** &nbsp;·&nbsp; **[The 32M context](#the-32-million-token-context)** &nbsp;·&nbsp; **[Everything in it](#everything-in-it)** &nbsp;·&nbsp; **[Mesh](#5-mesh--every-machine-in-your-house-as-one)** &nbsp;·&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;·&nbsp; **[API](#connect-anything)** &nbsp;·&nbsp; **[FAQ](#questions-people-actually-ask)**
+**[Install](#install)** &nbsp;·&nbsp; **[Velocity Context](#velocity-context)** &nbsp;·&nbsp; **[Everything in it](#everything-in-it)** &nbsp;·&nbsp; **[Mesh](#5-mesh--every-machine-in-your-house-as-one)** &nbsp;·&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;·&nbsp; **[API](#connect-anything)** &nbsp;·&nbsp; **[FAQ](#questions-people-actually-ask)**
 
 </div>
 
@@ -67,7 +67,7 @@ it, and the usual answers are all bad ones:
   and hope the chunks that come back are the right ones. When the answer is wrong you cannot tell
   whether the model failed or the retrieval did.
 
-**VLS gives the model a memory instead of a bigger window.**
+**Velocity Context gives the model a store to reach into, instead of a bigger window.**
 
 You compile a folder once. Every question after that reaches the whole of it: the service works out
 which passages the answer needs, hands the model only those, and shows you a receipt of exactly
@@ -83,9 +83,11 @@ what it read. The model's window never changes — it stops mattering.
 
 ---
 
-## The 32-million-token context
+<a name="velocity-context"></a>
+## Velocity Context
 
-This is the part worth understanding, because it is not what people assume.
+This is our technology and the reason VLS exists. It is worth understanding, because it is not
+what people assume.
 
 ### It is not RAG
 
@@ -97,6 +99,28 @@ of its words are rare in this particular corpus, finds the windows that hold the
 from those windows to the ones they point at — a second hop, for questions whose answer sits beside
 somebody the question never named — and assembles what fits. A single linear pass over token ids
 with a hash lookup, which is what makes 32 million affordable without a GPU touching it.
+
+### How little of it runs
+
+This is the number the whole design is for, and it is the one people do not expect.
+
+A question does not read the store. It reaches into it — so what the model executes is a fraction
+of a percent of what it can reach, and that fraction *falls* as the store grows.
+
+| store | median tokens executed to answer | share of the store |
+|---|---:|---:|
+| 128 000 tokens | 90 | **0.07 %** |
+| 1 000 000 tokens | 152 | **0.015 %** |
+
+<sub>BABILong QA1 on the official lane, 100 samples each, same laptop. This is a different harness
+from the RULER tables further down and the two are never mixed: BABILong measures whether a fact
+planted in a haystack comes back, and it reports what was executed to get it. Scores on that lane
+were 92.0% at 128k and 86.0% at 1M, against <b>0.0%</b> for the same prompts with the text removed —
+the control that makes the rest of it mean anything.</sub>
+
+A conventional long-context model pays for every token in the window on every turn, in memory and
+in time. Velocity Context pays for the passage and leaves the rest on disk, which is why the answer
+takes the same half second whether the store holds one million tokens or thirty-two.
 
 ### What it costs
 
@@ -171,7 +195,7 @@ and it reads their headers without loading anything.
 
 <img src=".github/playground.png" alt="Playground" width="100%">
 
-Talk to the loaded model with a memory attached. A reasoning model's working is shown **as it
+Talk to the loaded model with a Velocity Context attached. A reasoning model's working is shown **as it
 happens** rather than behind a spinner, and **thinking is a switch beside the message box**, per
 conversation rather than per installation: on for a hard question, off for a lookup. On a short
 factual question that is the difference between 4.1 seconds and 0.2.
@@ -299,13 +323,13 @@ published 13-task RULER average, and we do not present it as one.</sub>
 
 ## Built on
 
-VLS is a **router with a memory**, not an inference engine of its own. Work goes to whichever
+VLS is a **router with Velocity Context behind it**, not an inference engine of its own. Work goes to whichever
 backend suits the model, and we are explicit about which parts are ours and which are other
 people's.
 
 | layer | what it is | whose |
 |---|---|---|
-| **Velocity Context** | The 32M-token memory: compiles documents, selects the passages a question needs, hands the model only those. This is what makes a small window stop mattering. | **ours** |
+| **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those — a fraction of a percent of the store per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
 | **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
 | **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
 
