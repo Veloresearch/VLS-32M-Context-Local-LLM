@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src=".github/banner-v2.png" alt="VLS — Velocity Context: reach 32 million tokens, execute a fraction of a percent" width="100%">
+<img src=".github/banner-v2.png" alt="VLS &mdash; Velocity Context: reach 32 million tokens, execute a fraction of a percent" width="100%">
 
 <br><br>
 
@@ -19,7 +19,7 @@
 
 <div align="center">
 
-**[Install](#install)** &nbsp;·&nbsp; **[Velocity Context](#velocity-context)** &nbsp;·&nbsp; **[Everything in it](#everything-in-it)** &nbsp;·&nbsp; **[Mesh](#5-mesh--every-machine-in-your-house-as-one)** &nbsp;·&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;·&nbsp; **[API](#connect-anything)** &nbsp;·&nbsp; **[FAQ](#questions-people-actually-ask)**
+**[Install](#install)** &nbsp;&middot;&nbsp; **[Velocity Context](#velocity-context)** &nbsp;&middot;&nbsp; **[Everything in it](#everything-in-it)** &nbsp;&middot;&nbsp; **[Mesh](#mesh)** &nbsp;&middot;&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;&middot;&nbsp; **[API](#connect-anything)** &nbsp;&middot;&nbsp; **[FAQ](#questions-people-actually-ask)**
 
 </div>
 
@@ -29,7 +29,7 @@
 
 <div align="center">
 
-### A 4B model with an 8,192-token window answered across 32,000,000 tokens in 653 ms — on a 6 GB laptop card
+### A 4B model with an 8,192-token window answered across 32,000,000 tokens in 653 ms &mdash; on a 6 GB laptop card
 
 **3,900x its window. 0.015% of the context executed. Nothing left the machine.**
 
@@ -48,7 +48,7 @@ Three ways exist to put more material in front of a model. Two of them are what 
 
 | | a bigger context window | RAG / a vector database | **Velocity Context** |
 |---|---|---|---|
-| **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only — **0.015%** of the context |
+| **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only &mdash; **0.015%** of the context |
 | **what you have to run** | a bigger card | a second service, an embedding model, an index | nothing: one file on your disk |
 | **adding a document** | nothing to do, but the window fills | re-embed, re-index, hope the chunk size still suits | append, in seconds |
 | **tuning it** | context length | chunk size, overlap, top-k, similarity threshold | none of these exist |
@@ -58,8 +58,27 @@ Three ways exist to put more material in front of a model. Two of them are what 
 
 The row that matters is the last but one. A long-context model pays for scale in memory; a vector
 database pays for it in a second system you now operate. Velocity Context reaches into a file and
-runs a passage — so **thirty-two times the material costs the same half second**, and the fraction
+runs a passage &mdash; so **thirty-two times the material costs the same half second**, and the fraction
 it executes gets *smaller* as the context gets bigger.
+
+### What stops being true
+
+None of the lines below are arguments. They are things that used to follow from how a model reads,
+and no longer do.
+
+- *"That corpus is too big for a local model."* Size stopped being the question. Thirty-two million
+  tokens is one file on a laptop disk.
+- *"You need a bigger card."* The window never grew. What runs is a passage, and a passage is small
+  whether it came out of a megabyte or a gigabyte.
+- *"Long context is slow."* Answer time is set by what is executed, not by what is held. Thirty-two
+  times the material, the same half second.
+- *"You need a retrieval stack."* No embedding model, no vector database, no chunk size, no top-k,
+  no similarity threshold. There is nothing to tune because none of it exists.
+- *"You cannot know why it answered that."* Every turn hands back the exact text the model was
+  given.
+
+Each of those is a number further down this page, produced on the laptop in the header, with the
+command that produced it sitting in the panel.
 
 That is the whole claim, and it is falsifiable on your own machine in about five minutes.
 
@@ -80,7 +99,7 @@ irm https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest/do
 curl -fsSL https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest/download/install.sh | sh
 ```
 
-The installer looks at the machine before it downloads anything and takes the build that suits it —
+The installer looks at the machine before it downloads anything and takes the build that suits it &mdash;
 **CUDA** where there is an NVIDIA card, **Vulkan** on Linux where there is any card at all (NVIDIA,
 AMD or Intel), **processor** otherwise. It opens the panel when it is done.
 
@@ -94,7 +113,7 @@ touched by an install, an update or an uninstall.
 ## The problem
 
 A model's context window is a hard limit paid for in memory. Eight thousand tokens, thirty-two
-thousand, a hundred and twenty-eight — whatever it is, the work you actually have is bigger than
+thousand, a hundred and twenty-eight &mdash; whatever it is, the work you actually have is bigger than
 it, and the usual answers are all bad ones:
 
 - **Send less.** Then the model answers about the part you happened to pick.
@@ -107,7 +126,7 @@ it, and the usual answers are all bad ones:
 
 You compile a folder once. Every question after that reaches the whole of it: the service works out
 which passages the answer needs, hands the model only those, and shows you a receipt of exactly
-what it read. The model's window never changes — it stops mattering.
+what it read. The model's window never changes &mdash; it stops mattering.
 
 <div align="center">
 <br>
@@ -132,15 +151,15 @@ context is a **file on your disk** in a documented format, built once, read dire
 
 Selection works on **rarity in the model's own tokens**. When you ask a question, VLS looks at which
 of its words are rare in this particular corpus, finds the windows that hold them, follows names
-from those windows to the ones they point at — a second hop, for questions whose answer sits beside
-somebody the question never named — and assembles what fits. A single linear pass over token ids
+from those windows to the ones they point at &mdash; a second hop, for questions whose answer sits beside
+somebody the question never named &mdash; and assembles what fits. A single linear pass over token ids
 with a hash lookup, which is what makes 32 million affordable without a GPU touching it.
 
 ### How little of it runs
 
 This is the number the whole design is for, and it is the one people do not expect.
 
-A question does not read the context. It reaches into it — so what the model executes is a
+A question does not read the context. It reaches into it &mdash; so what the model executes is a
 fraction of a percent of what it can reach, and that fraction *falls* as the context grows.
 
 | context | median tokens executed to answer | share of the context |
@@ -151,7 +170,7 @@ fraction of a percent of what it can reach, and that fraction *falls* as the con
 <sub>BABILong QA1 on the official lane, 100 samples each, same laptop. This is a different harness
 from the RULER tables further down and the two are never mixed: BABILong measures whether a fact
 planted in a haystack comes back, and it reports what was executed to get it. Scores on that lane
-were 92.0% at 128k and 86.0% at 1M, against <b>0.0%</b> for the same prompts with the text removed —
+were 92.0% at 128k and 86.0% at 1M, against <b>0.0%</b> for the same prompts with the text removed &mdash;
 the control that makes the rest of it mean anything.</sub>
 
 A conventional long-context model pays for every token in the window on every turn, in memory and
@@ -172,7 +191,7 @@ reaches into it.
 
 ### What you get back
 
-Every answer carries a receipt — not a log you go and find, but part of the response:
+Every answer carries a receipt &mdash; not a log you go and find, but part of the response:
 
 - which context answered, and how much of it can be reached
 - how many windows were considered, and how many were selected
@@ -181,7 +200,18 @@ Every answer carries a receipt — not a log you go and find, but part of the re
 
 That receipt is the difference between a system you can debug and one you have to trust. When an
 answer is wrong you can see immediately whether the memory failed to deliver the passage or the
-model failed to read it — and those two need opposite fixes.
+model failed to read it &mdash; and those two need opposite fixes.
+
+### The number, in things you already have
+
+Thirty-two million tokens is abstract until something of yours is in it. It is every source file,
+test, commit message and design note of a large project, held at once and asked about as one thing.
+It is years of your own mail and meeting transcripts. It is a shelf of books kept whole rather than
+cut into chunks and hoped over.
+
+The size is not the interesting part. The interesting part is that the machine reading it is the
+one already on your desk, that nothing was uploaded to make it possible, and that the answer came
+back in 653 ms.
 
 ### Where it fills up
 
@@ -206,11 +236,11 @@ quietly forgets is worse than one that says it is full.
 <img src=".github/api.png" alt="The API page" width="100%">
 
 An OpenAI-compatible endpoint on a local address, so anything that already talks to OpenAI talks to
-VLS — editors, agents, scripts, your own code. Streaming, tool calls, the usual sampling knobs.
+VLS &mdash; editors, agents, scripts, your own code. Streaming, tool calls, the usual sampling knobs.
 
 The **API** page shows the address of *this machine on your network*, not `localhost`, next to the
-key and a request you can paste. It reports `context_length` as **the model's window** — the most
-one request may contain — and reports how far the memory reaches, how much of it is used and what
+key and a request you can paste. It reports `context_length` as **the model's window** &mdash; the most
+one request may contain &mdash; and reports how far the memory reaches, how much of it is used and what
 happens when it fills, as separate fields beside it. Two different numbers, never added together,
 because a client that confuses them builds prompts that get trimmed without anybody noticing.
 
@@ -220,7 +250,7 @@ because a client that confuses them builds prompts that get trimmed without anyb
 
 Search Hugging Face from inside the panel. VLS reads each build's header, compares it against the
 card and memory it found in this machine, and tells you which quantisation will run well **before**
-the download starts — rather than after eight gigabytes have arrived.
+the download starts &mdash; rather than after eight gigabytes have arrived.
 
 Downloads keep running when you leave the page, show progress on the Models page and in Activity,
 and a half-finished file is **never given a model's name**, so it can never be offered to you as
@@ -236,36 +266,36 @@ happens** rather than behind a spinner, and **thinking is a switch beside the me
 conversation rather than per installation: on for a hard question, off for a lookup. On a short
 factual question that is the difference between 4.1 seconds and 0.2.
 
-Each conversation has its own memory, so two chats — or two people — do not overwrite each other.
+Each conversation has its own memory, so two chats &mdash; or two people &mdash; do not overwrite each other.
 
-### 4. Flows — work VLS does on its own
+### 4. Flows &mdash; work VLS does on its own
 
 <img src=".github/flows.png" alt="Flows" width="100%">
 
 A canvas of nodes joined by wires: read a folder, compile it into memory, ask the model, branch on
-the answer, write the result to a file — on a schedule, without you. A wire carries text, the order
+the answer, write the result to a file &mdash; on a schedule, without you. A wire carries text, the order
 comes from the graph, and a loop is refused rather than run.
 
-Everything runs on this machine. No accounts, no OAuth, no webhooks out — and that is a decision,
+Everything runs on this machine. No accounts, no OAuth, no webhooks out &mdash; and that is a decision,
 not a gap. An automation product's value is its four hundred integrations, each with its own review
 process and its own breaking change every quarter; and the moment VLS asks for somebody's mail
 password it becomes a thing worth attacking. What is here instead is the work only VLS can do,
 because only VLS has the memory.
 
-<a name="5-mesh--every-machine-in-your-house-as-one"></a>
-### 5. Mesh — every machine in your house as one
+<a name="mesh"></a>
+### 5. Mesh &mdash; every machine in your house as one
 
 <img src=".github/mesh.png" alt="Mesh" width="100%">
 
 The old laptop in the drawer, the box under the desk, the one with the card in it. Switch the mesh
-on and they **find each other by themselves** — no addresses to type, no configuration files. One
+on and they **find each other by themselves** &mdash; no addresses to type, no configuration files. One
 machine makes a join code, you paste it into the others, and the panel shows what the whole house
 has: every machine, its address, which one is in charge, how much memory it brings and how fast it
 reads it.
 
 The join code **never travels over your network**. Only a hash of it does, so a machine listening on
 your wifi learns that VLS exists and nothing else. A machine that is *found* is listed and asked
-nothing until it is *joined*, and the main role can be handed from one machine to another — the new
+nothing until it is *joined*, and the main role can be handed from one machine to another &mdash; the new
 one takes it before the old one stands down, so the mesh is never left without one.
 
 > **Where it stands.** What ships today is discovery, the pooled view of what your machines have,
@@ -280,7 +310,7 @@ one takes it before the old one stands down, so the mesh is never left without o
 <img src=".github/benchmarks.png" alt="Benchmarks" width="100%">
 
 Decode speed, time to first token, context retrieval, BABILong-style long context, and your own
-prompt — measured on **your** machine with **your** model, kept as a record of runs that actually
+prompt &mdash; measured on **your** machine with **your** model, kept as a record of runs that actually
 happened. Nothing here is a number we shipped; it is a number your computer produced.
 
 ### 7. Everything the machine is doing
@@ -288,7 +318,7 @@ happened. Nothing here is a number we shipped; it is a number your computer prod
 <img src=".github/system.png" alt="System" width="100%">
 
 Card, memory, temperature, what is resident and where it was placed, which backend took the model
-and why it was chosen. Usage and client history survive restarts **and updates** — a record that
+and why it was chosen. Usage and client history survive restarts **and updates** &mdash; a record that
 only lasts until the next release is not a record.
 
 <br>
@@ -321,19 +351,19 @@ Cloned, nothing underneath it modified: their generators, their scorer, their pr
 | qa_2 | 100 | 40 | 40 | 40 | 30.0 |
 | **13-task average** | **100.0** | **74.8** | **85.5** | **89.1** | **86.9** |
 
-<sub>4k–64k are five samples a cell; 128k is twenty — 260 runs in that column alone.</sub>
+<sub>4k&ndash;64k are five samples a cell; 128k is twenty &mdash; 260 runs in that column alone.</sub>
 
 The score **rises** from 16k to 64k, which is backwards for a context benchmark and is exactly the
 shape this architecture predicts: the model's window is 8 192 tokens at every length, so nothing is
-ever "too long to read" — what changes is how much material selection has to choose from. **The 16k
+ever "too long to read" &mdash; what changes is how much material selection has to choose from. **The 16k
 column is the anomaly, not the 128k one**, and we do not yet know why. `qa_2` at 30% is the floor.
 At five samples a cell the 128k average reads **89.6**; at twenty it reads **86.9**, and we publish
 the second number.
 
 ### And beyond, to 32 million
 
-Past 128k NVIDIA's harness stops, so the ladder below is **our own** — same task definitions, our
-haystack, our scorer — on the same machine and the same window. The two are reported separately and
+Past 128k NVIDIA's harness stops, so the ladder below is **our own** &mdash; same task definitions, our
+haystack, our scorer &mdash; on the same machine and the same window. The two are reported separately and
 never averaged together.
 
 | task | 1M | 5M | 10M | 15M | 20M | 25M | 32M |
@@ -349,7 +379,7 @@ never averaged together.
 | vt | 80 | 60 | 100 | 80 | 80 | 100 | 100 |
 | **nine-task average** | **97.8** | **95.6** | **100** | **97.8** | **97.8** | **100** | **100** |
 
-<sub>Five samples a cell, 315 runs. <b>Nine of RULER's thirteen tasks</b> — niah_multikey_2,
+<sub>Five samples a cell, 315 runs. <b>Nine of RULER's thirteen tasks</b> &mdash; niah_multikey_2,
 niah_multikey_3, qa_1 and qa_2 are not in this sweep, so this average is <b>not</b> comparable to a
 published 13-task RULER average, and we do not present it as one.</sub>
 
@@ -365,9 +395,9 @@ people's.
 
 | layer | what it is | whose |
 |---|---|---|
-| **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those — a fraction of a percent of the context per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
+| **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those &mdash; a fraction of a percent of the context per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
 | **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
-| **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
+| **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts &mdash; the research line behind Velocity. Selected automatically for models built for it. | **ours** |
 
 Credit where it is owed: **without llama.cpp there would be no VLS to download.** We add the memory,
 the routing, the hardware fit, the mesh and the panel. The engine is theirs, and their licence
@@ -406,7 +436,7 @@ curl http://127.0.0.1:11500/v1/chat/completions \
 ```
 
 The reply carries a `velocity_context` block: which context answered, how many windows were read,
-what it cost, and — with `velocity_excerpt` — the exact text the model was given.
+what it cost, and &mdash; with `velocity_excerpt` &mdash; the exact text the model was given.
 
 The panel's **API** page has all of this filled in already with this machine's address and key.
 
@@ -441,10 +471,10 @@ The panel's **API** page has all of this filled in already with this machine's a
 </table>
 
 The first path is the program and an update replaces it wholesale. The other two are yours and an
-update never touches them — updating VLS must never cost you a re-download of models. To remove it,
+update never touches them &mdash; updating VLS must never cost you a re-download of models. To remove it,
 delete the program directory; your models and memories stay until you delete those too.
 
-**Updating:** Settings → Service says whether a newer build exists and installs it in place, with a
+**Updating:** Settings &rarr; Service says whether a newer build exists and installs it in place, with a
 progress bar and no commands to run.
 
 <br>
@@ -476,11 +506,29 @@ Any GGUF that llama.cpp runs. The panel checks each build against your hardware 
 it.
 
 **Can several people use one install?**
-Yes — turn on network access and other machines on your network can reach the same endpoint with
+Yes &mdash; turn on network access and other machines on your network can reach the same endpoint with
 the same key. Each application and each conversation gets its own memory rather than sharing one.
 
 **Is it finished?**
 No. See below.
+
+<br>
+
+---
+
+## The direction
+
+Every other answer to *the context is too small* grows something: the window, the card, the cluster,
+the invoice. All of them are linear. Twice the material costs twice as much, and they stop where
+somebody's budget stops.
+
+Selection runs the other way. The context grows, the executed share falls, and the cost of a single
+answer stays where it is. That is why a laptop which could not hold a 32M-token conversation for one
+second can answer across one in half of it, and it is why the number worth looking at in this README
+is not 32,000,000. It is 0.015%.
+
+Everything else we are building follows from that one property. VLS is the part of it you can run
+today.
 
 <br>
 
@@ -493,7 +541,7 @@ are rough edges. There are bugs. Some of them are ours to be embarrassed about, 
 probably find one before we do.
 
 **Please [open an issue](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/issues) when you
-do** — that is what a preview is for, and it is by far the fastest way to get it fixed.
+do** &mdash; that is what a preview is for, and it is by far the fastest way to get it fixed.
 
 <br>
 
@@ -502,7 +550,7 @@ do** — that is what a preview is for, and it is by far the fastest way to get 
 ## Licence
 
 **Free for personal use.** Use it on your own machines, for your own work, for as long as you like,
-at no cost — including commercial work you do as an individual.
+at no cost &mdash; including commercial work you do as an individual.
 
 **Companies need a licence.** If VLS is used inside a company, by employees, on company hardware or
 inside a product, write to **contact@veloresearch.com** and we will sort it out quickly and
@@ -531,6 +579,6 @@ A star is how the next person finds it.
 
 Local runtimes and long-context execution.
 
-[veloresearch.com](https://veloresearch.com) &nbsp;·&nbsp; [@velo_research](https://x.com/velo_research) &nbsp;·&nbsp; [contact@veloresearch.com](mailto:contact@veloresearch.com)
+[veloresearch.com](https://veloresearch.com) &nbsp;&middot;&nbsp; [@velo_research](https://x.com/velo_research) &nbsp;&middot;&nbsp; [contact@veloresearch.com](mailto:contact@veloresearch.com)
 
 </div>
