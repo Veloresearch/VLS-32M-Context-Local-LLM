@@ -27,6 +27,42 @@
 
 ---
 
+<div align="center">
+
+### A 4B model with an 8,192-token window answered across 32,000,000 tokens in 653 ms — on a 6 GB laptop card
+
+**3,900x its window. 0.015% of the store executed. Nothing left the machine.**
+
+Every number on this page was produced on that one laptop, and the commands that produced them
+are in the panel. Run them yourself before you believe us.
+
+</div>
+
+<br>
+
+---
+
+## Why this is not the usual answer
+
+Three ways exist to put more material in front of a model. Two of them are what everybody ships.
+
+| | a bigger context window | RAG / a vector database | **Velocity Context** |
+|---|---|---|---|
+| **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only — **0.015%** of the store |
+| **what you have to run** | a bigger card | a second service, an embedding model, an index | nothing: one file on your disk |
+| **adding a document** | nothing to do, but the window fills | re-embed, re-index, hope the chunk size still suits | append, in seconds |
+| **tuning it** | context length | chunk size, overlap, top-k, similarity threshold | none of these exist |
+| **why did it answer that?** | it saw everything, so: unanswerable | which chunks came back, roughly | **the exact text it was handed, every turn** |
+| **when the corpus grows** | you buy VRAM, or you truncate | latency and index size grow with it | the executed share **falls**; answer time does not move |
+| **ceiling** | what fits in memory | what your database can serve | 32M tokens today, on a laptop |
+
+The row that matters is the last but one. A long-context model pays for scale in memory; a vector
+database pays for it in a second system you now operate. Velocity Context reaches into a file and
+runs a passage — so **thirty-two times the material costs the same half second**, and the fraction
+it executes gets *smaller* as the store gets bigger.
+
+That is the whole claim, and it is falsifiable on your own machine in about five minutes.
+
 <a name="install"></a>
 ## Install
 
