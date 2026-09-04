@@ -1,15 +1,17 @@
 <div align="center">
 
-<img src=".github/hero.png" alt="VLS — run any model on your own machine, and give it a memory 3,900x its window" width="100%">
+<img src=".github/banner.png" alt="VLS — run any model on your own machine, and give it a memory 3,900x its window" width="100%">
 
 <br><br>
 
-[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-32M-Context-Local-LLM?label=release&color=2B2B31&labelColor=17171A&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-32M-Context-Local-LLM/total?color=2B2B31&labelColor=17171A&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases)
-[![Windows](https://img.shields.io/badge/Windows-x64_%C2%B7_CUDA-2B2B31?labelColor=17171A&style=for-the-badge&logo=windows&logoColor=f4f4f3)](#windows)
-[![Linux](https://img.shields.io/badge/Linux-x64_%C2%B7_Vulkan-2B2B31?labelColor=17171A&style=for-the-badge&logo=linux&logoColor=f4f4f3)](#linux)
-[![Licence](https://img.shields.io/badge/free_for_personal_use-2B2B31?labelColor=17171A&style=for-the-badge)](LICENSE)
-[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=2B2B31&labelColor=17171A&logo=github&logoColor=f4f4f3)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
+[![Release](https://img.shields.io/github/v/release/Veloresearch/VLS-32M-Context-Local-LLM?label=release&color=4B5BF5&labelColor=17171A&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Veloresearch/VLS-32M-Context-Local-LLM/total?label=downloads&color=2EA043&labelColor=17171A&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM/releases)
+[![Stars](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=E3B341&labelColor=17171A&logo=github&logoColor=white)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
+[![Views](https://visitor-badge.laobi.icu/badge?page_id=Veloresearch.VLS-32M-Context-Local-LLM&title=views&color=00A3A3&style=for-the-badge)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
+
+[![Windows](https://img.shields.io/badge/Windows-x64_%C2%B7_CUDA-0078D4?labelColor=17171A&style=for-the-badge&logo=windows&logoColor=white)](#windows)
+[![Linux](https://img.shields.io/badge/Linux-x64_%C2%B7_Vulkan-E95420?labelColor=17171A&style=for-the-badge&logo=linux&logoColor=white)](#linux)
+[![Licence](https://img.shields.io/badge/free_for_personal_use-8B5CF6?labelColor=17171A&style=for-the-badge)](LICENSE)
 
 </div>
 
@@ -459,7 +461,7 @@ See [LICENSE](LICENSE) for the exact terms.
 It is free, it has no telemetry, and there is nothing else we want from you.
 A star is how the next person finds it.
 
-[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=2B2B31&labelColor=17171A&logo=github&logoColor=f4f4f3&label=star%20this%20repository)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
+[![Star this repository](https://img.shields.io/github/stars/Veloresearch/VLS-32M-Context-Local-LLM?style=for-the-badge&color=E3B341&labelColor=17171A&logo=github&logoColor=white&label=star%20this%20repository)](https://github.com/Veloresearch/VLS-32M-Context-Local-LLM)
 
 <br><br>
 
