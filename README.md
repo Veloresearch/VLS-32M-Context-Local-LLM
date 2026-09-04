@@ -31,7 +31,7 @@
 
 ### A 4B model with an 8,192-token window answered across 32,000,000 tokens in 653 ms — on a 6 GB laptop card
 
-**3,900x its window. 0.015% of the store executed. Nothing left the machine.**
+**3,900x its window. 0.015% of the context executed. Nothing left the machine.**
 
 Every number on this page was produced on that one laptop, and the commands that produced them
 are in the panel. Run them yourself before you believe us.
@@ -48,7 +48,7 @@ Three ways exist to put more material in front of a model. Two of them are what 
 
 | | a bigger context window | RAG / a vector database | **Velocity Context** |
 |---|---|---|---|
-| **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only — **0.015%** of the store |
+| **cost per turn** | every token in the window, in VRAM, every time | an embedding call, then a database query | the passage only — **0.015%** of the context |
 | **what you have to run** | a bigger card | a second service, an embedding model, an index | nothing: one file on your disk |
 | **adding a document** | nothing to do, but the window fills | re-embed, re-index, hope the chunk size still suits | append, in seconds |
 | **tuning it** | context length | chunk size, overlap, top-k, similarity threshold | none of these exist |
@@ -59,7 +59,7 @@ Three ways exist to put more material in front of a model. Two of them are what 
 The row that matters is the last but one. A long-context model pays for scale in memory; a vector
 database pays for it in a second system you now operate. Velocity Context reaches into a file and
 runs a passage — so **thirty-two times the material costs the same half second**, and the fraction
-it executes gets *smaller* as the store gets bigger.
+it executes gets *smaller* as the context gets bigger.
 
 That is the whole claim, and it is falsifiable on your own machine in about five minutes.
 
@@ -103,7 +103,7 @@ it, and the usual answers are all bad ones:
   and hope the chunks that come back are the right ones. When the answer is wrong you cannot tell
   whether the model failed or the retrieval did.
 
-**Velocity Context gives the model a store to reach into, instead of a bigger window.**
+**Velocity Context gives the model a context to reach into, instead of a bigger window.**
 
 You compile a folder once. Every question after that reaches the whole of it: the service works out
 which passages the answer needs, hands the model only those, and shows you a receipt of exactly
@@ -140,10 +140,10 @@ with a hash lookup, which is what makes 32 million affordable without a GPU touc
 
 This is the number the whole design is for, and it is the one people do not expect.
 
-A question does not read the store. It reaches into it — so what the model executes is a fraction
-of a percent of what it can reach, and that fraction *falls* as the store grows.
+A question does not read the context. It reaches into it — so what the model executes is a
+fraction of a percent of what it can reach, and that fraction *falls* as the context grows.
 
-| store | median tokens executed to answer | share of the store |
+| context | median tokens executed to answer | share of the context |
 |---|---:|---:|
 | 128 000 tokens | 90 | **0.07 %** |
 | 1 000 000 tokens | 152 | **0.015 %** |
@@ -156,7 +156,7 @@ the control that makes the rest of it mean anything.</sub>
 
 A conventional long-context model pays for every token in the window on every turn, in memory and
 in time. Velocity Context pays for the passage and leaves the rest on disk, which is why the answer
-takes the same half second whether the store holds one million tokens or thirty-two.
+takes the same half second whether the context holds one million tokens or thirty-two.
 
 ### What it costs
 
@@ -174,7 +174,7 @@ reaches into it.
 
 Every answer carries a receipt — not a log you go and find, but part of the response:
 
-- which store answered, and how much of it is addressable
+- which context answered, and how much of it can be reached
 - how many windows were considered, and how many were selected
 - **the exact text handed to the model**, if you ask for it
 - what selection cost, in milliseconds and in tokens of the window
@@ -365,7 +365,7 @@ people's.
 
 | layer | what it is | whose |
 |---|---|---|
-| **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those — a fraction of a percent of the store per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
+| **Velocity Context** | Compiles your documents once, selects the passages a question needs, and hands the model only those — a fraction of a percent of the context per question. This is the technology; it is what makes a small window stop mattering. | **ours** |
 | **[llama.cpp](https://github.com/ggml-org/llama.cpp)** | The GGUF inference engine underneath every model VLS runs today. Georgi Gerganov and the ggml authors, MIT. We ship their `llama-server` unmodified. | *theirs* |
 | **Velocity / MTA** | Our own execution runtime for `.mfy` artifacts — the research line behind Velocity. Selected automatically for models built for it. | **ours** |
 
@@ -405,7 +405,7 @@ curl http://127.0.0.1:11500/v1/chat/completions \
        "messages":[{"role":"user","content":"what did we decide about the schema?"}]}'
 ```
 
-The reply carries a `velocity_context` block: which store answered, how many windows were read,
+The reply carries a `velocity_context` block: which context answered, how many windows were read,
 what it cost, and — with `velocity_excerpt` — the exact text the model was given.
 
 The panel's **API** page has all of this filled in already with this machine's address and key.
