@@ -299,22 +299,8 @@ factual question that is the difference between 4.1 seconds and 0.2.
 
 Each conversation has its own memory, so two chats &mdash; or two people &mdash; do not overwrite each other.
 
-### 4. Flows &mdash; work VLS does on its own
-
-<img src=".github/flows.png" alt="Flows" width="100%">
-
-A canvas of nodes joined by wires: read a folder, compile it into memory, ask the model, branch on
-the answer, write the result to a file &mdash; on a schedule, without you. A wire carries text, the order
-comes from the graph, and a loop is refused rather than run.
-
-Everything runs on this machine. No accounts, no OAuth, no webhooks out &mdash; and that is a decision,
-not a gap. An automation product's value is its four hundred integrations, each with its own review
-process and its own breaking change every quarter; and the moment VLS asks for somebody's mail
-password it becomes a thing worth attacking. What is here instead is the work only VLS can do,
-because only VLS has the memory.
-
 <a name="mesh"></a>
-### 5. Mesh &mdash; every machine in your house as one
+### 4. Mesh &mdash; every machine in your house as one
 
 <img src=".github/mesh.png" alt="Mesh" width="100%">
 
@@ -329,14 +315,20 @@ your wifi learns that VLS exists and nothing else. A machine that is *found* is 
 nothing until it is *joined*, and the main role can be handed from one machine to another &mdash; the new
 one takes it before the old one stands down, so the mesh is never left without one.
 
-> **Where it stands.** What ships today is discovery, the pooled view of what your machines have,
-> and the placement plan: which device would hold which layers, fastest first, card before system
-> memory, so a model too large for any one machine has somewhere to go. Splitting a model across
-> machines is measured and works; wiring it into the product is the next piece of work, and until
-> that lands the mesh reports and routes rather than splits. We would rather say that here than
-> have you find it out after installing.
+**A model too large for one card is loaded across them.** Every machine in a joined mesh runs a
+worker; the machine you are sitting at loads the model, keeps the layers its own card can hold and
+hands the rest to the others. What crosses the network is the hidden state at a layer boundary -
+about five kilobytes a token - not the weights and not your documents. Nothing is typed and nothing
+is configured: join the mesh, load a model that does not fit, and it fits.
 
-### 6. Benchmarks you run yourself
+> **What that costs, said plainly.** The worker speaks llama.cpp's RPC protocol, which has no
+> authentication of its own: anything that can reach the port can use that card. So it runs only
+> while the machine is in a mesh, which needs a join code, it listens on your local network and
+> never beyond it, and it stops the moment you switch the mesh off. Splitting one model over a
+> gigabit switch is a pipeline, not tensor parallelism - the boundary carries a hidden state per
+> token, which a LAN handles comfortably; sharding every matrix multiply would not.
+
+### 5. Benchmarks you run yourself
 
 <img src=".github/benchmarks.png" alt="Benchmarks" width="100%">
 
@@ -344,7 +336,7 @@ Decode speed, time to first token, context retrieval, BABILong-style long contex
 prompt &mdash; measured on **your** machine with **your** model, kept as a record of runs that actually
 happened. Nothing here is a number we shipped; it is a number your computer produced.
 
-### 7. Everything the machine is doing
+### 6. Everything the machine is doing
 
 <img src=".github/system.png" alt="System" width="100%">
 
