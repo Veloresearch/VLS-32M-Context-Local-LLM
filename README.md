@@ -19,7 +19,7 @@
 
 <div align="center">
 
-**[Install](#install)** &nbsp;&middot;&nbsp; **[Claude Code &amp; Codex](#integrations)** &nbsp;&middot;&nbsp; **[Velocity Context](#velocity-context)** &nbsp;&middot;&nbsp; **[Everything in it](#everything-in-it)** &nbsp;&middot;&nbsp; **[Mesh](#mesh)** &nbsp;&middot;&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;&middot;&nbsp; **[API](#connect-anything)** &nbsp;&middot;&nbsp; **[FAQ](#questions-people-actually-ask)**
+**[Install](#install)** &nbsp;&middot;&nbsp; **[Velocity Context](#velocity-context)** &nbsp;&middot;&nbsp; **[Everything in it](#everything-in-it)** &nbsp;&middot;&nbsp; **[Mesh](#mesh)** &nbsp;&middot;&nbsp; **[Benchmarks](#measured-not-claimed)** &nbsp;&middot;&nbsp; **[API](#connect-anything)** &nbsp;&middot;&nbsp; **[FAQ](#questions-people-actually-ask)**
 
 **[veloresearch.com/vls](https://veloresearch.com/vls)**
 
@@ -135,76 +135,6 @@ what it read. The model's window never changes &mdash; it stops mattering.
 <img src=".github/home.png" alt="The VLS panel" width="960">
 <br><br>
 </div>
-
-<br>
-
----
-
-<br>
-
----
-
-<a name="integrations"></a>
-## Your own material, inside Claude Code
-
-<div align="center">
-<br>
-<img src=".github/integrations.png" alt="Integrations: Claude Code, Codex and opencode connected to a Velocity Context" width="100%">
-<br><br>
-</div>
-
-Claude Code, Codex and opencode can read your Velocity Context while they work. One switch per
-tool. VLS writes the connection into that tool's own settings, starts the bridge, speaks to it,
-reads its tool list back &mdash; and only then says **Connected**. Nothing to copy, no ports to type,
-no JSON to edit.
-
-They get four tools over whichever context is active:
-
-| tool | what the agent uses it for |
-|---|---|
-| `velocity_context_search` | find where something is said, and in which file |
-| `velocity_context_get` | ask a question, get back the passages that answer it |
-| `velocity_context_read` | follow a hit into the surrounding text, at any length |
-| `velocity_context_sources` | what the context is made of, and how large it is |
-
-The last two are what make it navigation rather than one lucky guess. A search returns positions;
-the agent can narrow to part of the corpus, follow a hit, and read around it &mdash; instead of being
-stuck with whatever the first retrieval happened to return.
-
-### What this is, and what it is not
-
-It does **not** give those tools a 32,000,000-token context window. Their window is whatever it
-was, and no tool can change that.
-
-What it gives them is a door into a corpus that large, out of which VLS returns only the passages
-that bear on the question:
-
-```text
-  Claude Code / Codex / opencode
-            |  asks a question
-            v
-  VLS, on this machine
-            |  selects by rarity over tokens
-            v
-  Velocity Context  -  up to 32,000,000 tokens, in a .mfyc on your disk
-            |
-            v
-  the evidence that answers  -  a few thousand tokens, back to the agent
-```
-
-Your documents never leave the machine. Only the answer to a question that was asked does, and
-every call comes back with a receipt: how much was held, how many pages were opened, how many
-tokens came back.
-
-**Measured here, against the corpus in the screenshot above** &mdash; 7,303 documents, 173,666 pages,
-**11,870,577 tokens** compiled for Qwen3.5-4B on a 6 GB laptop card:
-
-```text
-held:      11,870,577 tokens
-opened:    13 pages of 173,666        (0.0075%)
-returned:  7,490 tokens
-selection: 1,724 ms
-```
 
 <br>
 
