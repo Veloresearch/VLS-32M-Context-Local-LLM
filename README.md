@@ -56,7 +56,7 @@ Three ways exist to put more material in front of a model. Two of them are what 
 | **tuning it** | context length | chunk size, overlap, top-k, similarity threshold | none of these exist |
 | **why did it answer that?** | it saw everything, so: unanswerable | which chunks came back, roughly | **the exact text it was handed, every turn** |
 | **when the corpus grows** | you buy VRAM, or you truncate | latency and index size grow with it | the executed share **falls**; answer time does not move |
-| **ceiling** | what fits in memory | what your database can serve | 32M tokens today, on a laptop |
+| **ceiling** | what fits in memory | what your database can serve | **1 000 000 000 tokens** &mdash; measured to 32M |
 
 The row that matters is the last but one. A long-context model pays for scale in memory; a vector
 database pays for it in a second system you now operate. Velocity Context reaches into a file and
@@ -222,6 +222,13 @@ takes the same half second whether the context holds one million tokens or thirt
 Thirty-two times the material, the same half second. A question does not read the corpus; it
 reaches into it.
 
+**A context can be created with a capacity of up to 1 000 000 000 tokens.** The ceiling was never
+architectural - a `.mfyc` is segments on a disk and the index is per segment, so the cost of a
+question follows how rare its words are, not how much material sits behind them. What the table
+above reports is the largest corpus we have measured end to end, and we do not print numbers we
+have not run: **the figures on this page stop at 32M because that is where our measurements stop**,
+not where the format does.
+
 ### What you get back
 
 Every answer carries a receipt &mdash; not a log you go and find, but part of the response:
@@ -251,6 +258,11 @@ back in 653 ms.
 A context has a stated capacity. When it is full the write is **refused with a message naming the
 limit** and nothing is silently dropped; you give it more room or start another. A memory that
 quietly forgets is worse than one that says it is full.
+
+Building one is real work over your material, and the panel says how far through it is and **how
+much longer it has** &mdash; in the source's bytes while it reads them, then segment by segment while
+the loaded model reads them again in its own tokens. Both figures come from the rate the job has
+actually run at; neither is shown until it has run long enough for that rate to mean anything.
 
 <div align="center">
 <br>
@@ -286,9 +298,13 @@ card and memory it found in this machine, and tells you which quantisation will 
 the download starts &mdash; rather than after eight gigabytes have arrived.
 
 Downloads keep running when you leave the page, show progress on the Models page and in Activity,
-and a half-finished file is **never given a model's name**, so it can never be offered to you as
-something loadable. Load and unload from the tile. Point VLS at a folder of GGUFs you already have
-and it reads their headers without loading anything.
+and say **how much longer they have** &mdash; from a rate measured over the last few seconds, so it
+survives a resume and notices a line that has slowed, rather than averaging the whole transfer and
+reporting a speed the connection no longer has. A half-finished file is **never given a model's
+name**, so it can never be offered to you as something loadable. Load, unload and delete from the
+tile; the model currently answering does not offer delete, because the service will not remove what
+it is reading from. Point VLS at a folder of GGUFs you already have and it reads their headers
+without loading anything.
 
 ### 3. Playground, with a receipt for every answer
 
@@ -345,6 +361,10 @@ happened. Nothing here is a number we shipped; it is a number your computer prod
 Card, memory, temperature, what is resident and where it was placed, which backend took the model
 and why it was chosen. Usage and client history survive restarts **and updates** &mdash; a record that
 only lasts until the next release is not a record.
+
+Settings can restart the service without a terminal. It answers the request before it goes, so the
+panel waits the gap out and tells you when it is back, instead of leaving a browser holding a dead
+socket. Nothing on disk is touched.
 
 <br>
 
@@ -520,8 +540,9 @@ rarity over the model's own tokens, read straight out of a file. It also means t
 re-index when you add a document.
 
 **How big can a context be?**
-Ten million tokens by default, thirty-two million as configured, and the service tells you how full
-one is and refuses cleanly when it is full.
+Ten million tokens by default, and up to **a billion** if you choose it when you make one. The
+measurements on this page stop at thirty-two million because that is where our measurements stop.
+Whatever the capacity, the service tells you how full one is and refuses cleanly when it is full.
 
 **Does it need a GPU?**
 No. It runs on the processor, and on Linux the Vulkan build uses NVIDIA, AMD or Intel cards alike.
