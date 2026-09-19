@@ -222,6 +222,11 @@ takes the same half second whether the context holds one million tokens or thirt
 Thirty-two times the material, the same half second. A question does not read the corpus; it
 reaches into it.
 
+The build column is the text pass - reading the source and indexing its words. The first model
+to meet a context reads it once more in its own tokens, at about three seconds per million tokens
+on this laptop, and every model after that does the same once. Measured on a 901,840,595-token
+context: 48 minutes end to end.
+
 **A context can be created with a capacity of up to 1 000 000 000 tokens.** The ceiling was never
 architectural - a `.mfyc` is segments on a disk and the index is per segment, so the cost of a
 question follows how rare its words are, not how much material sits behind them. What the table
